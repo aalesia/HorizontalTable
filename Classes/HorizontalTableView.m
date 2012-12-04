@@ -23,7 +23,8 @@
 
 #import "HorizontalTableView.h"
 
-#define kColumnPoolSize 3
+#define kColumnPoolSize 5
+#define kPixelsPerSecond 100.0f
 
 @interface HorizontalTableView()
 
@@ -226,6 +227,7 @@
 {
 	_columnPool = [[NSMutableArray alloc] initWithCapacity:kColumnPoolSize];
     _columnWidth = 0.0;
+    [self refreshData];
 }
 
 
@@ -239,11 +241,6 @@
 {
 	self.contentOffset = CGPointMake(newIndex * [self pageSize].width, 0);
 }
-
-
-#pragma mark -
-#pragma mark UIScrollViewDelegate methods
-
 
 - (void)setContentOffset:(CGPoint)contentOffset
 {
@@ -293,6 +290,34 @@
 {
     _columnPool = nil;
     _pageViews = nil;
+}
+
+#pragma mark - Autoscrolling methods
+
+- (void)startAnimation
+{
+    [NSTimer scheduledTimerWithTimeInterval:5.0
+                                     target:self
+                                   selector:@selector(onTimer:)
+                                   userInfo:nil
+                                    repeats:YES];
+}
+
+- (void)onTimer:(id)sender
+{
+    if (_currentPageIndex + 1 < [self numberOfPages]) {
+        [self setContentOffset:CGPointMake([self columnWidth] * (_currentPageIndex + 1), 0.0)
+                      animated:YES];
+    } else {
+        [self setContentOffset:CGPointMake(0.0, 0.0)
+                      animated:YES];
+    }
+}
+
+- (void)animationDidStop:(NSString *)animationID finished:(NSNumber *)finished context:(void *)context
+{
+    self.contentOffset = CGPointMake(0, 0);
+    [self startAnimation];
 }
 
 @end

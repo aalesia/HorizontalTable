@@ -48,5 +48,6 @@
 
 - (void)refreshData;
 - (UIView *)dequeueColumnView;
+- (void)startAnimation;
 
 @end

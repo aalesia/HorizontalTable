@@ -87,7 +87,14 @@
     [self.tableView performSelector:@selector(refreshData) withObject:nil afterDelay:0.3f];
 }
 
-
+- (void)viewDidAppear:(BOOL)animated
+{
+    [super viewDidAppear:animated];
+    
+    [self.tableView performSelector:@selector(startAnimation)
+                         withObject:nil
+                         afterDelay:2.0];
+}
 
 - (BOOL)shouldAutorotateToInterfaceOrientation:(UIInterfaceOrientation)interfaceOrientation {
     // Overriden to allow any orientation.
