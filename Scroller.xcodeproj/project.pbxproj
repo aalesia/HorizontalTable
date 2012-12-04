@@ -201,6 +201,7 @@
 				INFOPLIST_FILE = "Scroller-Info.plist";
 				IPHONEOS_DEPLOYMENT_TARGET = 5.0;
 				PRODUCT_NAME = Scroller;
+				SDKROOT = iphoneos;
 			};
 			name = Debug;
 		};
@@ -215,6 +216,7 @@
 				INFOPLIST_FILE = "Scroller-Info.plist";
 				IPHONEOS_DEPLOYMENT_TARGET = 5.0;
 				PRODUCT_NAME = Scroller;
+				SDKROOT = iphoneos;
 				VALIDATE_PRODUCT = YES;
 			};
 			name = Release;

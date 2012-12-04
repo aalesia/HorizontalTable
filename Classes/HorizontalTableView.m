@@ -25,8 +25,7 @@
 
 #define kColumnPoolSize 3
 
-@interface HorizontalTableView() <UIScrollViewDelegate>
-
+@interface HorizontalTableView()
 
 @property (nonatomic, assign) NSUInteger currentPhysicalPageIndex;
 @property (nonatomic, assign) NSInteger visibleColumnCount;
@@ -35,7 +34,6 @@
 @property (nonatomic, readonly) NSUInteger currentPageIndex;
 
 @property (nonatomic, strong) NSMutableArray *pageViews;
-@property (nonatomic, strong) UIScrollView *scrollView;
 @property (nonatomic, strong) NSMutableArray *columnPool;
 
 - (void)prepareView;
@@ -82,7 +80,7 @@
             pageView = [_dataSource tableView:self viewForIndex:pageIndex];
             [self setGestureRecognizerForView:pageView];
             [self.pageViews replaceObjectAtIndex:pageIndex withObject:pageView];
-            [self.scrollView addSubview:pageView];
+            [self addSubview:pageView];
             DLog(@"View loaded for page %d", pageIndex);
         }
 	} else {
@@ -106,15 +104,15 @@
 
 - (void)tappedColumn:(id)sender
 {
-    if (_delegate) {
+    if (self.delegate) {
         UITapGestureRecognizer *tapGestureRecognizer = (UITapGestureRecognizer *)sender;
-        [_delegate tableView:self didSelectColumnAtIndex:[self.pageViews indexOfObject:tapGestureRecognizer.view]];
+        [self.delegate tableView:self didSelectColumnAtIndex:[self.pageViews indexOfObject:tapGestureRecognizer.view]];
     }
 }
 
 - (CGSize)pageSize
 {
-    CGRect rect = self.scrollView.bounds;
+    CGRect rect = self.bounds;
 	return rect.size;
 }
 
@@ -212,7 +210,7 @@
 - (void)layoutPages
 {
     CGSize pageSize = self.bounds.size;
-	self.scrollView.contentSize = CGSizeMake([self.pageViews count] * [self columnWidth], pageSize.height);
+	self.contentSize = CGSizeMake([self.pageViews count] * [self columnWidth], pageSize.height);
 }
 
 - (id)init
@@ -232,62 +230,46 @@
     
     self.autoresizesSubviews = YES;
     
-    UIScrollView *scroller = [[UIScrollView alloc] init];
-    CGRect rect = self.bounds;
-    scroller.frame = rect;
-    scroller.backgroundColor = [UIColor blackColor];
-	scroller.delegate = self;
-    scroller.autoresizesSubviews = YES;
-    scroller.autoresizingMask = UIViewAutoresizingFlexibleWidth | UIViewAutoresizingFlexibleHeight;
+    self.backgroundColor = [UIColor blackColor];
+    self.autoresizesSubviews = YES;
+    self.autoresizingMask = UIViewAutoresizingFlexibleWidth | UIViewAutoresizingFlexibleHeight;
     
 	//self.scrollView.pagingEnabled = YES;
-	scroller.showsHorizontalScrollIndicator = YES;
-	scroller.showsVerticalScrollIndicator = NO;
-    scroller.alwaysBounceVertical = NO;
-    self.scrollView = scroller;
-	[self addSubview:scroller];
-    scroller = nil;
+	self.showsHorizontalScrollIndicator = YES;
+	self.showsVerticalScrollIndicator = NO;
+    self.alwaysBounceVertical = NO;
 }
 
 
 - (NSUInteger)physicalPageIndex
 {
-    NSUInteger page = self.scrollView.contentOffset.x / [self columnWidth];
+    NSUInteger page = self.contentOffset.x / [self columnWidth];
     return page;
 }
 
 - (void)setPhysicalPageIndex:(NSUInteger)newIndex
 {
-	self.scrollView.contentOffset = CGPointMake(newIndex * [self pageSize].width, 0);
+	self.contentOffset = CGPointMake(newIndex * [self pageSize].width, 0);
 }
 
 
 #pragma mark -
 #pragma mark UIScrollViewDelegate methods
 
-- (void)scrollViewDidScroll:(UIScrollView *)scrollView
+
+- (void)setContentOffset:(CGPoint)contentOffset
 {
-    //DLog(@"Did Scroll");
-	
-	NSUInteger newPageIndex = self.physicalPageIndex;
+    [super setContentOffset:contentOffset];
+    
+    NSUInteger newPageIndex = self.physicalPageIndex;
 	if (newPageIndex == _currentPhysicalPageIndex) return;
 	_currentPhysicalPageIndex = newPageIndex;
 	_currentPageIndex = newPageIndex;
 	
 	[self currentPageIndexDidChange];
     
-    CGSize rect = [self.scrollView contentSize];
+    CGSize rect = [self contentSize];
     DLog(@"CSize = %@", NSStringFromCGSize(rect));
-}
-
-- (void)scrollViewDidEndDragging:(UIScrollView *)scrollView willDecelerate:(BOOL)decelerate
-{
-    
-}
-
-- (void)scrollViewDidEndDecelerating:(UIScrollView *)scrollView
-{
-	DLog(@"scrollViewDidEndDecelerating");
 }
 
 - (BOOL)shouldAutorotateToInterfaceOrientation:(UIInterfaceOrientation)interfaceOrientation
@@ -313,7 +295,7 @@
 		if ([self isPhysicalPageLoaded:pageIndex])
 			[self viewForPhysicalPage:pageIndex].hidden = NO;
 	
-    self.scrollView.contentSize = CGSizeMake([self.pageViews count] * [self columnWidth], [self pageSize].height);
+    self.contentSize = CGSizeMake([self.pageViews count] * [self columnWidth], [self pageSize].height);
 
     [self currentPageIndexDidChange];
 }
@@ -323,7 +305,6 @@
 {
     _columnPool = nil;
     _pageViews = nil;
-    _scrollView = nil;
 }
 
 @end

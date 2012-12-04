@@ -25,13 +25,13 @@
 
 @class HorizontalTableView;
 
-@protocol HorizontalTableViewDelegate
+@protocol HorizontalTableViewDelegate <NSObject, UIScrollViewDelegate>
 
 - (void)tableView:(HorizontalTableView *)tableView didSelectColumnAtIndex:(NSInteger)index;
 
 @end
 
-@protocol HorizontalTableViewDataSource
+@protocol HorizontalTableViewDataSource <NSObject>
 
 - (NSInteger)numberOfColumnsForTableView:(HorizontalTableView *)tableView;
 - (UIView *)tableView:(HorizontalTableView *)tableView viewForIndex:(NSInteger)index;
@@ -39,7 +39,7 @@
 
 @end
 
-@interface HorizontalTableView : UIView
+@interface HorizontalTableView : UIScrollView
 {
 }
 
