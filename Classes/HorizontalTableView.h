@@ -27,6 +27,12 @@
 
 @protocol HorizontalTableViewDelegate
 
+- (void)tableView:(HorizontalTableView *)tableView didSelectRowAtIndex:(NSInteger)index;
+
+@end
+
+@protocol HorizontalTableViewDataSource
+
 - (NSInteger)numberOfColumnsForTableView:(HorizontalTableView *)tableView;
 - (UIView *)tableView:(HorizontalTableView *)tableView viewForIndex:(NSInteger)index;
 - (CGFloat)columnWidthForTableView:(HorizontalTableView *)tableView;
@@ -35,21 +41,12 @@
 
 
 
-@interface HorizontalTableView : UIView {
-	NSMutableArray *_pageViews;
-	UIScrollView *_scrollView;
-	NSUInteger _currentPageIndex;
-	NSUInteger _currentPhysicalPageIndex;
-    
-    NSInteger _visibleColumnCount;
-    NSNumber *_columnWidth;
-    
-    id __weak _delegate;
-    
-    NSMutableArray *_columnPool;
+@interface HorizontalTableView : UIView
+{
 }
 
-@property (weak) IBOutlet id<HorizontalTableViewDelegate> delegate;
+@property (weak, nonatomic) IBOutlet id<HorizontalTableViewDelegate> delegate;
+@property (weak, nonatomic) IBOutlet id<HorizontalTableViewDataSource> dataSource;
 
 - (void)refreshData;
 - (UIView *)dequeueColumnView;

@@ -24,7 +24,7 @@
 #import <UIKit/UIKit.h>
 #import "HorizontalTableView.h"
 
-@interface PageLoopViewController : UIViewController <HorizontalTableViewDelegate> {
+@interface PageLoopViewController : UIViewController <HorizontalTableViewDelegate, HorizontalTableViewDataSource> {
     HorizontalTableView *tableView;
     
     NSArray *colors;

@@ -94,15 +94,22 @@
     return YES;
 }
 
-#pragma mark -
-#pragma mark HorizontalTableViewDelegate methods
+#pragma mark - HorizontalTableViewDelegate
 
-- (NSInteger)numberOfColumnsForTableView:(HorizontalTableView *)tableView {
+- (void)tableView:(HorizontalTableView *)tableView didSelectRowAtIndex:(NSInteger)index
+{
+    
+}
+
+#pragma mark - HorizontalTableViewDataSource
+
+- (NSInteger)numberOfColumnsForTableView:(HorizontalTableView *)tableView
+{
     return [colors count];
 }
 
-- (UIView *)tableView:(HorizontalTableView *)aTableView viewForIndex:(NSInteger)index {
-    
+- (UIView *)tableView:(HorizontalTableView *)aTableView viewForIndex:(NSInteger)index
+{    
     UIView *vw = [aTableView dequeueColumnView];
     if (!vw) {
         DLog(@"Constructing new view");
@@ -121,7 +128,8 @@
 	return vw;
 }
 
-- (CGFloat)columnWidthForTableView:(HorizontalTableView *)tableView {
+- (CGFloat)columnWidthForTableView:(HorizontalTableView *)tableView
+{
     return 150.0f;
 }
 
