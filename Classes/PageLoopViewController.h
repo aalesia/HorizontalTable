@@ -32,7 +32,7 @@
     UIView *columnView;
 }
 
-@property (nonatomic, retain) IBOutlet HorizontalTableView *tableView;
-@property (nonatomic, retain) IBOutlet UIView *columnView;
+@property (nonatomic, strong) IBOutlet HorizontalTableView *tableView;
+@property (nonatomic, strong) IBOutlet UIView *columnView;
 
 @end

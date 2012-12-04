@@ -50,9 +50,8 @@
 
 
 - (void)dealloc {
-    [tableView release], tableView = nil;
-    [columnView release], columnView = nil;
-    [super dealloc];
+    tableView = nil;
+    columnView = nil;
 }
 
 #pragma mark -

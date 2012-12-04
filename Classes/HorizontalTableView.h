@@ -44,12 +44,12 @@
     NSInteger _visibleColumnCount;
     NSNumber *_columnWidth;
     
-    id _delegate;
+    id __weak _delegate;
     
     NSMutableArray *_columnPool;
 }
 
-@property (assign) IBOutlet id<HorizontalTableViewDelegate> delegate;
+@property (weak) IBOutlet id<HorizontalTableViewDelegate> delegate;
 
 - (void)refreshData;
 - (UIView *)dequeueColumnView;

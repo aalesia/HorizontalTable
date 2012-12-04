@@ -27,11 +27,11 @@
 
 @interface HorizontalTableView() <UIScrollViewDelegate>
 
-@property (nonatomic, retain) NSMutableArray *pageViews;
-@property (nonatomic, retain) UIScrollView *scrollView;
+@property (nonatomic, strong) NSMutableArray *pageViews;
+@property (nonatomic, strong) UIScrollView *scrollView;
 @property (nonatomic, readonly) NSUInteger currentPageIndex;
 @property (nonatomic) NSUInteger physicalPageIndex;
-@property (nonatomic, retain) NSMutableArray *columnPool;
+@property (nonatomic, strong) NSMutableArray *columnPool;
 
 - (void)prepareView;
 - (void)layoutPages;
@@ -99,7 +99,7 @@
     if (!_columnWidth) {
         if (_delegate) {
             CGFloat width = [_delegate columnWidthForTableView:self];
-            _columnWidth = [[NSNumber numberWithFloat:width] retain];
+            _columnWidth = [NSNumber numberWithFloat:width];
         }
     }
     return [_columnWidth floatValue];
@@ -131,12 +131,12 @@
 }
 
 - (UIView *)dequeueColumnView {
-    UIView *vw = [[self.columnPool lastObject] retain];
+    UIView *vw = [self.columnPool lastObject];
     if (vw) {
         [self.columnPool removeLastObject];
         DLog(@"Supply from reuse pool");
     }
-    return [vw autorelease];
+    return vw;
 }
 
 - (void)removeColumn:(NSInteger)index {
@@ -214,7 +214,7 @@
     scroller.alwaysBounceVertical = NO;
     self.scrollView = scroller;
 	[self addSubview:scroller];
-    [scroller release], scroller = nil;
+    scroller = nil;
 }
 
 
@@ -279,11 +279,10 @@
 
 
 - (void)dealloc {
-    [_columnPool release], _columnPool = nil;
-    [_columnWidth release], _columnWidth = nil;
-    [_pageViews release], _pageViews = nil;
-    [_scrollView release], _scrollView = nil;
-    [super dealloc];
+    _columnPool = nil;
+    _columnWidth = nil;
+    _pageViews = nil;
+    _scrollView = nil;
 }
 
 @end
