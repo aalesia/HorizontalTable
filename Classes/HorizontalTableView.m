@@ -75,11 +75,12 @@
 	NSParameterAssert(pageIndex >= 0);
 	NSParameterAssert(pageIndex < [self.pageViews count]);
 	
-	UIView *pageView;
+	UIView *pageView = nil;
 	if ([self.pageViews objectAtIndex:pageIndex] == [NSNull null]) {
         
         if (_dataSource) {
             pageView = [_dataSource tableView:self viewForIndex:pageIndex];
+            [self setGestureRecognizerForView:pageView];
             [self.pageViews replaceObjectAtIndex:pageIndex withObject:pageView];
             [self.scrollView addSubview:pageView];
             DLog(@"View loaded for page %d", pageIndex);
@@ -88,6 +89,27 @@
 		pageView = [self.pageViews objectAtIndex:pageIndex];
 	}
 	return pageView;
+}
+
+- (void)setGestureRecognizerForView:(UIView *)view
+{
+    if ([[view gestureRecognizers] count] > 0) {
+        return;
+    }
+    
+    UITapGestureRecognizer *tapGestureRecognizer = [[UITapGestureRecognizer alloc]
+                                                    initWithTarget:self
+                                                    action:@selector(tappedColumn:)];
+    
+    [view addGestureRecognizer:tapGestureRecognizer];
+}
+
+- (void)tappedColumn:(id)sender
+{
+    if (_delegate) {
+        UITapGestureRecognizer *tapGestureRecognizer = (UITapGestureRecognizer *)sender;
+        [_delegate tableView:self didSelectColumnAtIndex:[self.pageViews indexOfObject:tapGestureRecognizer.view]];
+    }
 }
 
 - (CGSize)pageSize
@@ -185,8 +207,6 @@
     for (NSInteger i = rightMostPageIndex + 1; i < [self.pageViews count]; i++) {
         [self removeColumn:i];
     }
-
- 
 }
 
 - (void)layoutPages

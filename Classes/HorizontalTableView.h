@@ -27,7 +27,7 @@
 
 @protocol HorizontalTableViewDelegate
 
-- (void)tableView:(HorizontalTableView *)tableView didSelectRowAtIndex:(NSInteger)index;
+- (void)tableView:(HorizontalTableView *)tableView didSelectColumnAtIndex:(NSInteger)index;
 
 @end
 
@@ -38,8 +38,6 @@
 - (CGFloat)columnWidthForTableView:(HorizontalTableView *)tableView;
 
 @end
-
-
 
 @interface HorizontalTableView : UIView
 {

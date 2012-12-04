@@ -96,9 +96,9 @@
 
 #pragma mark - HorizontalTableViewDelegate
 
-- (void)tableView:(HorizontalTableView *)tableView didSelectRowAtIndex:(NSInteger)index
+- (void)tableView:(HorizontalTableView *)tableView didSelectColumnAtIndex:(NSInteger)index
 {
-    
+    NSLog(@"tapped column: %d", index);
 }
 
 #pragma mark - HorizontalTableViewDataSource
