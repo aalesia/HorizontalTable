@@ -226,18 +226,6 @@
 {
 	_columnPool = [[NSMutableArray alloc] initWithCapacity:kColumnPoolSize];
     _columnWidth = 0.0;
-    [self setClipsToBounds:YES];
-    
-    self.autoresizesSubviews = YES;
-    
-    self.backgroundColor = [UIColor blackColor];
-    self.autoresizesSubviews = YES;
-    self.autoresizingMask = UIViewAutoresizingFlexibleWidth | UIViewAutoresizingFlexibleHeight;
-    
-	//self.scrollView.pagingEnabled = YES;
-	self.showsHorizontalScrollIndicator = YES;
-	self.showsVerticalScrollIndicator = NO;
-    self.alwaysBounceVertical = NO;
 }
 
 
