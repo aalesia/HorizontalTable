@@ -24,7 +24,6 @@
 #import "HorizontalTableView.h"
 
 #define kColumnPoolSize 5
-#define kPixelsPerSecond 100.0f
 
 @interface HorizontalTableView()
 
@@ -225,6 +224,7 @@
 
 - (void)prepareView
 {
+    _animationDuration = 5.0;
 	_columnPool = [[NSMutableArray alloc] initWithCapacity:kColumnPoolSize];
     _columnWidth = 0.0;
     [self refreshData];
@@ -300,7 +300,7 @@
         return;
     }
     
-    _timer = [NSTimer scheduledTimerWithTimeInterval:5.0
+    _timer = [NSTimer scheduledTimerWithTimeInterval:_animationDuration
                                               target:self
                                             selector:@selector(onTimer:)
                                             userInfo:nil

@@ -84,7 +84,6 @@
     }
     colors = colorArray;
    // [self.tableView refreshData];
-    self.tableView.useInfiniteScrolling = YES;
     [self.tableView performSelector:@selector(refreshData) withObject:nil afterDelay:0.3f];
 }
 

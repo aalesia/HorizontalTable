@@ -45,7 +45,8 @@
 
 @property (weak, nonatomic) IBOutlet id<HorizontalTableViewDelegate> delegate;
 @property (weak, nonatomic) IBOutlet id<HorizontalTableViewDataSource> dataSource;
-@property (assign, nonatomic) BOOL useInfiniteScrolling;
+
+@property (nonatomic, assign) CGFloat animationDuration;
 @property (nonatomic, readonly) NSUInteger currentPageIndex;
 
 - (void)refreshData;
