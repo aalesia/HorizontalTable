@@ -83,7 +83,8 @@
         [colorArray addObject:clr];
     }
     colors = colorArray;
-   // [self.tableView refreshData];    
+   // [self.tableView refreshData];
+    self.tableView.useInfiniteScrolling = YES;
     [self.tableView performSelector:@selector(refreshData) withObject:nil afterDelay:0.3f];
 }
 
@@ -106,6 +107,17 @@
 - (void)tableView:(HorizontalTableView *)tableView didSelectColumnAtIndex:(NSInteger)index
 {
     NSLog(@"tapped column: %d", index);
+}
+
+- (void)scrollViewWillBeginDragging:(UIScrollView *)scrollView
+{
+    [self.tableView stopAnimation];
+}
+
+- (void)scrollViewDidEndDecelerating:(UIScrollView *)scrollView
+{
+    [self.tableView scrollToPage:self.tableView.currentPageIndex animated:YES];
+    [self.tableView startAnimation];
 }
 
 #pragma mark - HorizontalTableViewDataSource

@@ -32,10 +32,10 @@
 @property (nonatomic, assign) NSInteger visibleColumnCount;
 @property (nonatomic, assign) NSUInteger physicalPageIndex;
 @property (nonatomic, assign) CGFloat columnWidth;
-@property (nonatomic, readonly) NSUInteger currentPageIndex;
 
 @property (nonatomic, strong) NSMutableArray *pageViews;
 @property (nonatomic, strong) NSMutableArray *columnPool;
+@property (nonatomic, strong) NSTimer *timer;
 
 - (void)prepareView;
 - (void)layoutPages;
@@ -296,28 +296,47 @@
 
 - (void)startAnimation
 {
-    [NSTimer scheduledTimerWithTimeInterval:5.0
-                                     target:self
-                                   selector:@selector(onTimer:)
-                                   userInfo:nil
-                                    repeats:YES];
+    if (_timer != nil) {
+        return;
+    }
+    
+    _timer = [NSTimer scheduledTimerWithTimeInterval:5.0
+                                              target:self
+                                            selector:@selector(onTimer:)
+                                            userInfo:nil
+                                             repeats:YES];
+}
+
+- (void)stopAnimation
+{
+    if (_timer == nil) {
+        return;
+    }
+    
+    [_timer invalidate];
+    _timer = nil;
 }
 
 - (void)onTimer:(id)sender
 {
     if (_currentPageIndex + 1 < [self numberOfPages]) {
-        [self setContentOffset:CGPointMake([self columnWidth] * (_currentPageIndex + 1), 0.0)
-                      animated:YES];
+        [self scrollToPage:_currentPageIndex animated:YES];
     } else {
         [self setContentOffset:CGPointMake(0.0, 0.0)
                       animated:YES];
     }
 }
 
-- (void)animationDidStop:(NSString *)animationID finished:(NSNumber *)finished context:(void *)context
+- (void)scrollToPage:(NSInteger)page animated:(BOOL)animated
 {
-    self.contentOffset = CGPointMake(0, 0);
-    [self startAnimation];
+    CGFloat offsetX = [self columnWidth] * (page + 1);
+    
+    if (offsetX >= (self.contentSize.width - self.frame.size.width)) {
+        offsetX = (self.contentSize.width - self.frame.size.width);
+    }
+    
+    [self setContentOffset:CGPointMake(offsetX, 0.0)
+                  animated:animated];
 }
 
 @end
