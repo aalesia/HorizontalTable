@@ -321,9 +321,11 @@
 {
     if (_currentPageIndex + 1 < [self numberOfPages]) {
         [self scrollToPage:_currentPageIndex animated:YES];
-    } else {
+    } else if (_loopAnimation) {
         [self setContentOffset:CGPointMake(0.0, 0.0)
                       animated:YES];
+    } else {
+        [self stopAnimation];
     }
 }
 
@@ -337,6 +339,10 @@
     
     [self setContentOffset:CGPointMake(offsetX, 0.0)
                   animated:animated];
+    
+    if (self.delegate) {
+        [self.delegate tableView:self showingColumnAtIndex:page + 1];
+    }
 }
 
 @end

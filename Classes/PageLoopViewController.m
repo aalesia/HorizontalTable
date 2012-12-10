@@ -108,6 +108,11 @@
     NSLog(@"tapped column: %d", index);
 }
 
+- (void)tableView:(HorizontalTableView *)tableView showingColumnAtIndex:(NSInteger)index
+{
+    NSLog(@"showing column: %d", index);
+}
+
 - (void)scrollViewWillBeginDragging:(UIScrollView *)scrollView
 {
     [self.tableView stopAnimation];

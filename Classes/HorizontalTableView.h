@@ -28,6 +28,7 @@
 @protocol HorizontalTableViewDelegate <NSObject, UIScrollViewDelegate>
 
 - (void)tableView:(HorizontalTableView *)tableView didSelectColumnAtIndex:(NSInteger)index;
+- (void)tableView:(HorizontalTableView *)tableView showingColumnAtIndex:(NSInteger)index;
 
 @end
 
@@ -47,6 +48,7 @@
 @property (weak, nonatomic) IBOutlet id<HorizontalTableViewDataSource> dataSource;
 
 @property (nonatomic, assign) CGFloat animationDuration;
+@property (nonatomic, assign) BOOL loopAnimation;
 @property (nonatomic, readonly) NSUInteger currentPageIndex;
 
 - (void)refreshData;
