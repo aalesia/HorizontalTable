@@ -320,10 +320,9 @@
 - (void)onTimer:(id)sender
 {
     if (_currentPageIndex + 1 < [self numberOfPages]) {
-        [self scrollToPage:_currentPageIndex animated:YES];
+        [self scrollToPage:_currentPageIndex + 1 animated:YES];
     } else if (_loopAnimation) {
-        [self setContentOffset:CGPointMake(0.0, 0.0)
-                      animated:YES];
+        [self scrollToPage:0 animated:YES];
     } else {
         [self stopAnimation];
     }
@@ -331,7 +330,7 @@
 
 - (void)scrollToPage:(NSInteger)page animated:(BOOL)animated
 {
-    CGFloat offsetX = [self columnWidth] * (page + 1);
+    CGFloat offsetX = [self columnWidth] * page;
     
     if (offsetX >= (self.contentSize.width - self.frame.size.width)) {
         offsetX = (self.contentSize.width - self.frame.size.width);
@@ -341,7 +340,7 @@
                   animated:animated];
     
     if (self.delegate) {
-        [self.delegate tableView:self showingColumnAtIndex:page + 1];
+        [self.delegate tableView:self showingColumnAtIndex:page];
     }
 }
 
