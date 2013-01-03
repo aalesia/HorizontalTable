@@ -49,6 +49,7 @@
 
 @property (nonatomic, assign) CGFloat animationDuration;
 @property (nonatomic, assign) BOOL loopAnimation;
+@property (nonatomic, assign) NSInteger animationScrollByCells;
 @property (nonatomic, readonly) NSUInteger currentPageIndex;
 
 - (void)refreshData;

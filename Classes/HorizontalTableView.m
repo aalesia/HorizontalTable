@@ -217,7 +217,17 @@
 {
     self = [super init];
     if (self) {
+        self.animationScrollByCells = 1;
         [self prepareView];
+    }
+    return self;
+}
+
+- (id)initWithCoder:(NSCoder *)aDecoder
+{
+    self = [super initWithCoder:aDecoder];
+    if (self) {
+        self.animationScrollByCells = 1;
     }
     return self;
 }
@@ -319,8 +329,8 @@
 
 - (void)onTimer:(id)sender
 {
-    if (_currentPageIndex + 1 < [self numberOfPages]) {
-        [self scrollToPage:_currentPageIndex + 1 animated:YES];
+    if (_currentPageIndex + _animationScrollByCells < [self numberOfPages]) {
+        [self scrollToPage:_currentPageIndex + _animationScrollByCells animated:YES];
     } else if (_loopAnimation) {
         [self scrollToPage:0 animated:YES];
     } else {
